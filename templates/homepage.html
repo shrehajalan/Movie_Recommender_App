@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" name="color-scheme" content="dark">
+    <title>Movie Recommender System</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css')}}">
+</head>
+
+<body>
+
+    <h1 class="title">Movie Recommendations</h1>
+    <br>
+    <form id = "myform" action="/recommend" method="POST">
+      <div class="stSelectbox">
+        <label class="stLabel" for="selected_movie_name">Select a movie of your choice from the list:</label>
+            <br>
+            <div class="search">
+              <select id="selected_movie_name" name="selected_movie_name" class="stSelectbox-select">
+                {% for movie in movies_list %}
+                <option value="{{ movie }}">{{ movie }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+                <button class="speak_btn" id="speech-btn" onclick="speech_text_func()" type="button" >Speak now</button>
+            </div>
+            <br><br>
+            <div>
+            <input type="submit"  class ="button" value="Recommend">
+            </div>
+    </form>
+    <script>
+      function speech_text_func()
+      {
+            //Use Web Speech API to handle speech recognition
+            var recognition = new webkitSpeechRecognition();
+
+            recognition.continuous = true;
+            //recognition.interimResults = true;
+            recognition.lang = "en-US";
+
+            // When the speech button is clicked, start speech recognition
+            document.getElementById("speech-btn").addEventListener("click", function() {
+            recognition.start();
+            });
+
+            const MAX_SPEECH_LENGTH = 30000; // in milliseconds
+            let timer = setTimeout(function() {
+            recognition.stop();}, MAX_SPEECH_LENGTH);
+
+            // When speech recognition is complete, display the transcribed text
+            recognition.onresult = function(event) {
+            clearTimeout(timer);
+            var text = event.results[0][0].transcript;
+            document.getElementsByName("selected_movie_name")[0].value = text;
+            var form = document.getElementById("myform");
+            form.submit();
+
+      };
+     }
+</script>
+</body>
+</html>

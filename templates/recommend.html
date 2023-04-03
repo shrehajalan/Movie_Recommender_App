@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" name="color-scheme" content="dark">
+	<title>Movie Recommendations</title>
+</head>
+<body>
+	<h1 class="title">Movie Recommendations</h1>
+	<div>
+		{% for i in range(5) %}
+		<div style="float: left; width: 15%; padding: 5px; border: 2px solid #4CAF50; margin-right:5px">
+			<h3>{{ names[i] }}</h3>
+			<img src="{{ posters[i] }}" alt="{{ names[i] }}" style="width:100%;">
+		</div>
+		{% endfor %}
+	</div>
+</body>
+</html>
